@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ portfolio_data.personal_info.name }}’s Portfolio</title>
+  <meta name="description" content="{{ portfolio_data.personal_info.bio }}">
+  <meta name="keywords" content="AI, ML, Machine Learning, Data Science, Python, Portfolio">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+</head>
+<body>
+  <!-- Navigation / header bar -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="{{ url_for('My_Portfolio') }}">Home</a></li>
+      <li><a href="{{ url_for('My_Profile') }}">Profile</a></li>
+      <li><a href="{{ url_for('projects') }}">Projects</a></li>
+      <li><a href="{{ url_for('My_Education') }}">Education</a></li>
+      <li><a href="{{ url_for('certifications') }}">Certifications</a></li>
+      <li><a href="{{ url_for('contact') }}">Contact</a></li>
+      <li><a href="{{ url_for('chatbot') }}">💬 Chat</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero / intro section -->
+  <section class="hero">
+    <h1>Hey, I'm <span id="dynamic-name"><a href="{{ url_for('My_Portfolio') }}" class="name-link">{{ portfolio_data.personal_info.name }}</a></span> 👋</h1>
+    <p>{{ portfolio_data.personal_info.role }}</p>
+    <p>{{ portfolio_data.personal_info.bio }}</p>
+    <div class="hero-buttons">
+      <button onclick="location.href='{{ url_for('My_Profile') }}'">View My Profile</button>
+      <button onclick="location.href='{{ url_for('projects') }}'">See My Projects</button>
+    </div>
+  </section>
+
+  <!-- Chat widget pinned bottom right -->
+  <div class="chat-widget" onclick="location.href='{{ url_for('chatbot') }}'">
+    <div class="chat-header">💬 Chat with {{ portfolio_data.personal_info.name.split()[0] }}'s AI</div>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

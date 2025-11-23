@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat with {{ portfolio_data.personal_info.name.split()[0] }}'s AI</title>
+  <meta name="description" content="Chat with Surya's AI assistant to learn about his projects, skills, and experience">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="top-nav">
+    <ul>
+      <li><a href="{{ url_for('My_Portfolio') }}">Home</a></li>
+      <li><a href="{{ url_for('My_Profile') }}">Profile</a></li>
+      <li><a href="{{ url_for('projects') }}">Projects</a></li>
+      <li><a href="{{ url_for('My_Education') }}">Education</a></li>
+      <li><a href="{{ url_for('certifications') }}">Certifications</a></li>
+      <li><a href="{{ url_for('contact') }}">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Chat Header -->
+  <section class="chat-header-section">
+    <div class="container">
+      <div class="chat-header-content">
+        <div class="ai-avatar">
+          <div class="avatar-circle">🤖</div>
+        </div>
+        <div class="chat-info">
+          <h1>Chat with <a href="{{ url_for('My_Portfolio') }}" class="name-link">{{ portfolio_data.personal_info.name.split()[0] }}</a>'s AI</h1>
+          <p>Ask me anything about {{ portfolio_data.personal_info.name.split()[0] }}'s projects, skills, experience, or education!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chat Container -->
+  <section class="chat-container-section">
+    <div class="container">
+      <div class="chat-container">
+        <div class="chat-messages" id="chat-messages">
+          <!-- Welcome message -->
+          <div class="chat-message bot welcome-message">
+            <div class="message-avatar">🤖</div>
+            <div class="message-content">
+              <div class="message-text">
+                👋 Hi there! I'm {{ portfolio_data.personal_info.name.split()[0] }}'s AI assistant. 
+                I can tell you about his projects, skills, experience, education, or answer any questions about his work!
+                <br><br>
+                Try asking me:
+                <ul>
+                  <li>"Tell me about his projects"</li>
+                  <li>"What skills does he have?"</li>
+                  <li>"What's his experience?"</li>
+                  <li>"How can I contact him?"</li>
+                </ul>
+              </div>
+              <div class="message-time" id="welcome-time"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="chat-input-container">
+          <div class="chat-input">
+            <input type="text" id="chat-input-field" placeholder="Ask me anything about {{ portfolio_data.personal_info.name.split()[0] }}..." />
+            <button id="chat-send-btn">
+              <span class="send-icon">➤</span>
+            </button>
+          </div>
+          <div class="chat-suggestions">
+            <button class="suggestion-btn" data-suggestion="Tell me about your projects">Projects</button>
+            <button class="suggestion-btn" data-suggestion="What skills do you have?">Skills</button>
+            <button class="suggestion-btn" data-suggestion="Tell me about your experience">Experience</button>
+            <button class="suggestion-btn" data-suggestion="How can I contact you?">Contact</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Info Sidebar -->
+  <aside class="quick-info-sidebar">
+    <div class="sidebar-content">
+      <h3>Quick Info</h3>
+      <div class="info-card">
+        <h4>{{ portfolio_data.personal_info.name.split()[0] }}</h4>
+        <p>{{ portfolio_data.personal_info.role }}</p>
+        <p>{{ portfolio_data.personal_info.location }}</p>
+      </div>
+      
+      <div class="info-card">
+        <h4>Projects</h4>
+        <p>{{ portfolio_data.projects|length }} completed</p>
+      </div>
+      
+      <div class="info-card">
+        <h4>Skills</h4>
+        <p>{{ portfolio_data.skills.values()|map('length')|sum }} technologies</p>
+      </div>
+      
+      <div class="info-card">
+        <h4>Experience</h4>
+        <p>{{ portfolio_data.experience|length }} positions</p>
+      </div>
+    </div>
+  </aside>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script>
+    // Chatbot page specific functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const inputField = document.getElementById('chat-input-field');
+      const sendBtn = document.getElementById('chat-send-btn');
+      const messagesDiv = document.getElementById('chat-messages');
+      const suggestionBtns = document.querySelectorAll('.suggestion-btn');
+      
+      let isTyping = false;
+
+      function appendMessage(sender, text, isHTML = false) {
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("chat-message", sender);
+        
+        const avatar = sender === 'user' ? '👤' : '🤖';
+        const currentTime = new Date().toLocaleTimeString('en-US', { 
+          hour: '2-digit', 
+          minute: '2-digit' 
+        });
+        
+        messageDiv.innerHTML = `
+          <div class="message-avatar">${avatar}</div>
+          <div class="message-content">
+            <div class="message-text">${isHTML ? text : text}</div>
+            <div class="message-time">${currentTime}</div>
+          </div>
+        `;
+        
+        messagesDiv.appendChild(messageDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+
+      function showTypingIndicator() {
+        if (isTyping) return;
+        isTyping = true;
+        const typingDiv = document.createElement("div");
+        typingDiv.classList.add("chat-message", "bot", "typing");
+        typingDiv.innerHTML = `
+          <div class="message-avatar">🤖</div>
+          <div class="message-content">
+            <div class="message-text">
+              <div class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <span style="margin-left: 10px;">{{ portfolio_data.personal_info.name.split()[0] }} is typing...</span>
+            </div>
+          </div>
+        `;
+        messagesDiv.appendChild(typingDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+
+      function hideTypingIndicator() {
+        const typingIndicator = messagesDiv.querySelector('.typing');
+        if (typingIndicator) {
+          typingIndicator.remove();
+        }
+        isTyping = false;
+      }
+
+      async function sendMessage(message = null) {
+        const msg = message || inputField.value.trim();
+        if (!msg || isTyping) return;
+        
+        appendMessage("user", msg);
+        inputField.value = "";
+        showTypingIndicator();
+
+        try {
+          const resp = await fetch("/api/chat", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message: msg })
+          });
+          
+          const data = await resp.json();
+          hideTypingIndicator();
+          
+          if (data.answer) {
+            const formattedAnswer = formatBotResponse(data.answer);
+            appendMessage("bot", formattedAnswer, true);
+          } else {
+            appendMessage("bot", "Sorry, I encountered an error. Please try again.");
+          }
+        } catch (err) {
+          hideTypingIndicator();
+          appendMessage("bot", "Sorry, I'm having trouble connecting. Please check your internet connection.");
+        }
+      }
+
+      function formatBotResponse(text) {
+        return text
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\n\n/g, '</p><p>')
+          .replace(/\n/g, '<br>')
+          .replace(/^(.*)$/, '<p>$1</p>');
+      }
+
+      // Event listeners
+      sendBtn.addEventListener("click", () => sendMessage());
+      
+      inputField.addEventListener("keypress", function(e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      // Suggestion buttons
+      suggestionBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const suggestion = btn.getAttribute('data-suggestion');
+          sendMessage(suggestion);
+        });
+      });
+
+      // Auto-focus input
+      inputField.focus();
+
+      // Set welcome message time
+      const welcomeTime = document.getElementById('welcome-time');
+      if (welcomeTime) {
+        const now = new Date();
+        welcomeTime.textContent = now.toLocaleTimeString('en-US', { 
+          hour: '2-digit', 
+          minute: '2-digit' 
+        });
+      }
+    });
+  </script>
+</body>
+</html>

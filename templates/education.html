@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{ portfolio_data.personal_info.name }} — Education</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header style="width:100%; padding:18px 32px; position:fixed; top:0; background: rgba(0,0,0,0.6); z-index:50;">
+    <nav style="display:flex; justify-content:space-between; align-items:center; max-width:1100px; margin:0 auto;">
+      <div style="font-weight:700; color:#00bfff;">{{ portfolio_data.personal_info.name.split()[0] }}</div>
+      <div style="display:flex; gap:18px;">
+        <a href="{{ url_for('My_Portfolio') }}" style="color:#b0b0b0; text-decoration:none;">Home</a>
+        <a href="{{ url_for('certifications') }}" style="color:#b0b0b0; text-decoration:none;">Certifications</a>
+      </div>
+    </nav>
+  </header>
+
+  <main style="padding-top:110px; display:flex; justify-content:center;">
+    <section style="max-width:900px; width:100%; padding:28px;">
+      <h1 style="color:#00bfff; margin-bottom:6px;">Education</h1>
+      <p style="color:#b0b0b0; margin-top:0;">Formal education and select online certifications relevant to ML & software engineering.</p>
+
+      <!-- Timeline -->
+      <div style="margin-top:22px; display:flex; flex-direction:column; gap:18px;">
+        <!-- Education -->
+        {% for edu in portfolio_data.education %}
+        <div style="display:flex; gap:18px; align-items:flex-start; background:#080808; padding:18px; border-radius:12px; border:1px solid #1f1f1f;">
+          <div style="min-width:120px; text-align:left;">
+            <div style="color:#00bfff; font-weight:700;">{{ edu.duration }}</div>
+            <div style="color:#b0b0b0; margin-top:6px;">{{ edu.degree }}</div>
+          </div>
+          <div style="flex:1;">
+            <h3 style="margin:0; color:#e6e6e6;">{{ edu.institution }}</h3>
+            <p style="color:#b0b0b0; margin:8px 0 0 0;">{{ edu.description }}</p>
+          </div>
+        </div>
+        {% endfor %}
+
+
+      </div>
+
+      <footer style="margin-top:36px; color:#6b6f76; font-size:0.9rem;">© {{ portfolio_data.personal_info.name.split()[0] }} • Education</footer>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

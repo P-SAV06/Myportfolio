@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact • Surya Akhil Varma</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="top-nav">
+        <ul>
+            <li><a href="/" >Home</a></li>
+            <li><a href="/My_Profile">Profile</a></li>
+            <li><a href="/My_Education">Education</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/certifications">Certifications</a></li>
+            <li><a class="active" href="/contact">Contact</a></li>
+            <li><a href="/chatbot">Chatbot</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="page-header">
+        <h1>Let’s Connect</h1>
+        <p>If you have any questions, collaboration ideas, or opportunities, feel free to reach out!</p>
+    </header>
+
+    <!-- Main Contact Section -->
+    <section class="container">
+        <div class="contact-grid">
+
+            <!-- Contact Form -->
+            <div class="contact-form-container">
+                <h2>Send a Message</h2>
+
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input id="name" type="text" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input id="email" type="email" placeholder="example@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" rows="5" placeholder="Write your message..." required></textarea>
+                    </div>
+
+                    <button class="submit-btn" type="submit">Send Message</button>
+
+                    <p id="form-status" style="margin-top: 1rem; text-align: center;"></p>
+                </form>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="contact-info-container">
+                <h2>Contact Information</h2>
+
+                <!-- Email -->
+                <div class="contact-item">
+                    <div class="contact-icon">📧</div>
+                    <div class="contact-details">
+                        <h3>Email</h3>
+                        <p><a href="mailto:{{ portfolio_data.personal_info.email }}">
+                            {{ portfolio_data.personal_info.email }}
+                        </a></p>
+                    </div>
+                </div>
+
+                <!-- GitHub -->
+                <div class="contact-item">
+                    <div class="contact-icon">👨‍💻</div>
+                    <div class="contact-details">
+                        <h3>GitHub</h3>
+                        <p><a href="{{ portfolio_data.personal_info.github }}" target="_blank">
+                            {{ portfolio_data.personal_info.github }}
+                        </a></p>
+                    </div>
+                </div>
+
+                <!-- LinkedIn -->
+                <div class="contact-item">
+                    <div class="contact-icon">💼</div>
+                    <div class="contact-details">
+                        <h3>LinkedIn</h3>
+                        <p><a href="{{ portfolio_data.personal_info.linkedin }}" target="_blank">
+                            {{ portfolio_data.personal_info.linkedin }}
+                        </a></p>
+                    </div>
+                </div>
+
+                <div class="availability">
+                    <h3>Availability</h3>
+                    <ul>
+                        <li>Open to internships & collaborations</li>
+                        <li>Flexible hours for communication</li>
+                        <li>Response within 24 hours</li>
+                    </ul>
+                </div>
+
+                <div class="response-time">
+                    <h3>Typical Response Time</h3>
+                    <p>Within a few hours (usually faster!)</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Social Section -->
+    <section class="social-section">
+        <h2>Connect on Social Platforms</h2>
+
+        <div class="social-links">
+
+            <a href="{{ portfolio_data.personal_info.github }}" target="_blank" class="social-link github">
+                <div class="social-icon">👨‍💻</div>
+                <div class="social-text">GitHub</div>
+            </a>
+
+            <a href="{{ portfolio_data.personal_info.linkedin }}" target="_blank" class="social-link linkedin">
+                <div class="social-icon">💼</div>
+                <div class="social-text">LinkedIn</div>
+            </a>
+
+            <a href="mailto:{{ portfolio_data.personal_info.email }}" class="social-link email">
+                <div class="social-icon">✉️</div>
+                <div class="social-text">Email</div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- Floating Chat Widget -->
+    <a href="/chatbot">
+        <div class="chat-widget">
+            <div class="chat-header">💬 Chat with Surya's AI</div>
+        </div>
+    </a>
+
+    <script>
+        // Dummy form handling (you can later replace with backend mail API)
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const status = document.getElementById("form-status");
+            status.innerHTML = "<span style='color:#00bfff;'>Sending...</span>";
+
+            setTimeout(() => {
+                status.innerHTML = "<span style='color:lightgreen;'>Message sent successfully!</span>";
+                document.getElementById("contactForm").reset();
+            }, 1200);
+        });
+    </script>
+
+</body>
+</html>
